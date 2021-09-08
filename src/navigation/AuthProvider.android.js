@@ -40,9 +40,7 @@ const AuthProvider = ({children}) => {
           try {
             await auth()
               .signInWithEmailAndPassword(email, password)
-              .then(() => {
-                console.log('signInWithCredential()');
-              });
+              .then(trySignUp());
           } catch (e) {
             console.log(e);
           }
@@ -59,6 +57,7 @@ const AuthProvider = ({children}) => {
             // Sign-in the user with the credential
             auth()
               .signInWithCredential(googleCredential)
+              .then(trySignUp())
               .then(() => callback())
               .catch(error => {
                 console.log('Something went wrong with sign up: ', error);
@@ -89,6 +88,7 @@ const AuthProvider = ({children}) => {
                 console.log('facebookCredential');
                 auth()
                   .signInWithCredential(facebookCredential)
+                  .then(trySignUp())
                   .then(() => callback());
               }
             }
