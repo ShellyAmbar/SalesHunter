@@ -26,7 +26,7 @@ const RootNavigation = () => {
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber;
+    return subscriber();
   }, []);
   //if (initializing) return null;
 
