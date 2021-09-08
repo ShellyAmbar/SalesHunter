@@ -14,8 +14,8 @@ import {AuthContext} from '../../navigation/AuthProvider.android';
 import {useNavigation, useTheme} from '@react-navigation/native';
 
 const SignUpScreen = () => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState();
   const navigation = useNavigation();
 

@@ -37,11 +37,16 @@ const AuthProvider = ({children}) => {
       value={{
         user,
         setUser,
-        login: async (email, password) => {
+        login: async (email, password, callback) => {
           try {
-            await auth()
+            if (email.length === 0 || password.length === 0) {
+              throw 'empthy data';
+            }
+            return auth()
               .signInWithEmailAndPassword(email, password)
-              .then(trySignUp());
+              .then(() => callback())
+              .catch(err => console.log(err));
+            // .then(trySignUp());
           } catch (e) {
             console.log(e);
           }
@@ -84,13 +89,10 @@ const AuthProvider = ({children}) => {
                 throw 'Something went wrong obtaining access token';
               }
               console.log('accessToken', res.accessToken);
-              const facebookCredential =
-                await auth.FacebookAuthProvider.credential(res.accessToken);
-              if (facebookCredential) {
-                console.log('facebookCredential');
-                return auth().signInWithCredential(facebookCredential);
-                //.then(() => trySignUp());
-              }
+              const facebookCredential = auth.FacebookAuthProvider.credential(
+                res.accessToken,
+              );
+              return auth().signInWithCredential(facebookCredential);
             }
 
             // Once signed in, get the users AccesToken
@@ -100,6 +102,9 @@ const AuthProvider = ({children}) => {
         },
         register: async (email, password, callback) => {
           try {
+            if (email.length === 0 || password.length === 0) {
+              throw 'empthy data';
+            }
             await auth()
               .createUserWithEmailAndPassword(email, password)
               .then(() => {

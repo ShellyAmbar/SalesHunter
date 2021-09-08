@@ -32,6 +32,7 @@ const RootNavigation = () => {
 
   return (
     <NavigationContainer>
+      {console.log('user', user)}
       {user ? <MainStack /> : <AuthStack />}
     </NavigationContainer>
   );

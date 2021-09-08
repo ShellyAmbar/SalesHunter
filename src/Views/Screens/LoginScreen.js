@@ -64,7 +64,7 @@ const LoginScreen = () => {
             btnType="facebook"
             color="#4867aa"
             backgroundColor="#e6eaf4"
-            onPress={fbLogin}
+            onPress={() => fbLogin().then(() => handleLoginSuccess())}
           />
 
           <SocialButton
@@ -72,7 +72,7 @@ const LoginScreen = () => {
             btnType="google"
             color="#de4d41"
             backgroundColor="#f5e7ea"
-            onPress={googleLogin}
+            onPress={() => googleLogin().then(() => handleLoginSuccess())}
           />
         </View>
       ) : null}
