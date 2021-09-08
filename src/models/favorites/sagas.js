@@ -8,20 +8,20 @@ import {
   setToFavoritesActionSuccess,
 } from './actionFunctions';
 import {
-  ADD_TO_FAVORITE_NEWS_REQUEST,
-  GET_FAVORITE_NEWS_REQUEST,
-  REMOVE_FROM_FAVORITE_NEWS_REQUEST,
+  ADD_TO_FAVORITE_REQUEST,
+  GET_FAVORITE_REQUEST,
+  REMOVE_FROM_FAVORITE_REQUEST,
 } from './actions';
 
 function* handlerGetFavorites() {
-  yield takeEvery(GET_FAVORITE_NEWS_REQUEST, getFavoritesNews);
+  yield takeEvery(GET_FAVORITE_REQUEST, getFavoritesNews);
 }
 
 function* handlerAddToFavorites() {
-  yield takeEvery(ADD_TO_FAVORITE_NEWS_REQUEST, addToFavoritesNews);
+  yield takeEvery(ADD_TO_FAVORITE_REQUEST, addToFavoritesNews);
 }
 function* handlerRemoveFromFavorites() {
-  yield takeEvery(REMOVE_FROM_FAVORITE_NEWS_REQUEST, removeFromFavoritesNews);
+  yield takeEvery(REMOVE_FROM_FAVORITE_REQUEST, removeFromFavoritesNews);
 }
 
 function* getFavoritesNews() {

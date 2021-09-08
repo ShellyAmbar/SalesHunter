@@ -13,7 +13,7 @@ const ListViewItem = props => {
         margin: 5,
         marginBottom: 30,
       }}>
-      {obj.image ? (
+      {obj && obj.image ? (
         <Image
           source={{uri: `${obj.image}`}}
           style={{height: 200, width: '100%', borderRadius: 10}}

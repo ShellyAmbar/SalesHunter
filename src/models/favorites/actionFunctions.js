@@ -1,22 +1,22 @@
 import {
-  ADD_TO_FAVORITE_NEWS_REQUEST_FAILURE,
-  ADD_TO_FAVORITE_NEWS_REQUEST_SUCCESS,
-  GET_FAVORITE_NEWS_REQUEST_FAILURE,
-  GET_FAVORITE_NEWS_REQUEST_SUCCESS,
-  REMOVE_FROM_FAVORITE_NEWS_REQUEST_FAILURE,
-  REMOVE_FROM_FAVORITE_NEWS_REQUEST_SUCCESS,
+  ADD_TO_FAVORITE_REQUEST_FAILURE,
+  ADD_TO_FAVORITE_REQUEST_SUCCESS,
+  GET_FAVORITE_REQUEST_FAILURE,
+  GET_FAVORITE_REQUEST_SUCCESS,
+  REMOVE_FROM_FAVORITE_REQUEST_FAILURE,
+  REMOVE_FROM_FAVORITE_REQUEST_SUCCESS,
 } from './actions';
 //GET
 const getFavoritesActionSuccess = news => {
   console.log('favoritesAction', news);
   return {
-    type: GET_FAVORITE_NEWS_REQUEST_SUCCESS,
+    type: GET_FAVORITE_REQUEST_SUCCESS,
     payload: news,
   };
 };
 const getFavoritesActionError = error => {
   return {
-    type: GET_FAVORITE_NEWS_REQUEST_FAILURE,
+    type: GET_FAVORITE_REQUEST_FAILURE,
     err: error,
     payload: error,
   };
@@ -25,13 +25,13 @@ const getFavoritesActionError = error => {
 
 const setToFavoritesActionSuccess = obj => {
   return {
-    type: ADD_TO_FAVORITE_NEWS_REQUEST_SUCCESS,
+    type: ADD_TO_FAVORITE_REQUEST_SUCCESS,
     payload: obj,
   };
 };
 const setToFavoritesActionError = error => {
   return {
-    type: ADD_TO_FAVORITE_NEWS_REQUEST_FAILURE,
+    type: ADD_TO_FAVORITE_REQUEST_FAILURE,
     err: error,
     payload: error,
   };
@@ -41,13 +41,13 @@ const setToFavoritesActionError = error => {
 
 const removeFromFavoritesActionSuccess = payload => {
   return {
-    type: REMOVE_FROM_FAVORITE_NEWS_REQUEST_SUCCESS,
+    type: REMOVE_FROM_FAVORITE_REQUEST_SUCCESS,
     payload: payload,
   };
 };
 const removeFromFavoritesActionError = error => {
   return {
-    type: REMOVE_FROM_FAVORITE_NEWS_REQUEST_FAILURE,
+    type: REMOVE_FROM_FAVORITE_REQUEST_FAILURE,
     err: error,
     payload: error,
   };

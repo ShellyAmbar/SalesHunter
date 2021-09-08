@@ -3,36 +3,35 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, Dimensions} from 'react-native';
 import {connect} from 'react-redux';
 import {
-  ADD_TO_FAVORITE_NEWS_REQUEST,
-  GET_FAVORITE_NEWS_REQUEST,
-  REMOVE_FROM_FAVORITE_NEWS_REQUEST,
+  GET_FAVORITE_REQUEST,
+  REMOVE_FROM_FAVORITE_REQUEST,
 } from '../../models/favorites/actions';
 import ListViewColumn from '../Customs/ListViewColumn';
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const mapStateToProps = (state, props) => {
-  const {news} = state.favorites;
-  console.log('mapState', news.length);
-  return {news};
+  const {favorites} = state.favorites;
+  console.log('mapState', favorites.length);
+  return {favorites};
 };
 
 const mapDispatchToProps = (dispatch, props) => ({
   getFavoritesNews: () => {
     dispatch({
-      type: GET_FAVORITE_NEWS_REQUEST,
+      type: GET_FAVORITE_REQUEST,
       payload: {},
     });
   },
   removeFromFavoritesNews: favorite => {
     dispatch({
-      type: REMOVE_FROM_FAVORITE_NEWS_REQUEST,
+      type: REMOVE_FROM_FAVORITE_REQUEST,
       payload: favorite,
     });
   },
 });
 
-const Favorites = ({news, getFavoritesNews, removeFromFavoritesNews}) => {
+const Favorites = ({favorites, getFavoritesNews, removeFromFavoritesNews}) => {
   const navigation = useNavigation();
   //const [list, setList] = useState([]);
   const onClickItem = product => {
@@ -61,11 +60,11 @@ const Favorites = ({news, getFavoritesNews, removeFromFavoritesNews}) => {
         Favorites
       </Text>
 
-      {news && news.length > 0 && (
+      {favorites && favorites.length > 0 && (
         <ListViewColumn
           onClickStar={removeFromFavorites}
           onClickItem={onClickItem}
-          dataList={news}
+          dataList={favorites}
         />
       )}
     </View>

@@ -57,7 +57,7 @@ const AuthProvider = ({children}) => {
               auth.GoogleAuthProvider.credential(idToken);
 
             // Sign-in the user with the credential
-            await auth()
+            auth()
               .signInWithCredential(googleCredential)
               .then(() => callback())
               .catch(error => {
@@ -87,13 +87,9 @@ const AuthProvider = ({children}) => {
                 await auth.FacebookAuthProvider.credential(res.accessToken);
               if (facebookCredential) {
                 console.log('facebookCredential');
-                const result = await auth().signInWithCredential(
-                  facebookCredential,
-                );
-                if (result) {
-                  console.log('result', result);
-                  callback();
-                }
+                auth()
+                  .signInWithCredential(facebookCredential)
+                  .then(() => callback());
               }
             }
 
