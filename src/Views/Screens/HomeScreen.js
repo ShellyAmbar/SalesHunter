@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
   PanResponder,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {ADD_TO_FAVORITE_NEWS_REQUEST} from '../../models/favorites/actions';
+import {ADD_TO_FAVORITE_REQUEST} from '../../models/favorites/actions';
 import {GET_PRODUCTS_REQUEST} from '../../models/products/actions';
 
 import OptionsScrollView from '../Customs/OptionsScrollView';
@@ -33,15 +33,15 @@ const mapDispatchToProps = (dispatch, props) => ({
       payload: {},
     });
   },
-  addToFavoritesNews: favorite => {
+  addToFavorites: favorite => {
     dispatch({
-      type: ADD_TO_FAVORITE_NEWS_REQUEST,
+      type: ADD_TO_FAVORITE_REQUEST,
       payload: favorite,
     });
   },
 });
 
-const Home = ({reverseProducts, getProducts, addToFavoritesNews}) => {
+const Home = ({reverseProducts, getProducts, addToFavorites}) => {
   useEffect(() => {
     getProducts();
   }, [getProducts]);
@@ -49,41 +49,40 @@ const Home = ({reverseProducts, getProducts, addToFavoritesNews}) => {
   const navigation = useNavigation();
   const pan = useRef(new Animated.ValueXY()).current;
 
-  const panResponder = useRef(
+  const panResponder = React.useRef(
     PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      //  onMoveShouldSetPanResponder: () => true,
-      onPanResponderGrant: (evt, gestureState) => {
-        pan.setOffset({
-          x: gestureState.dx,
-          y: gestureState.dy,
-        });
+      onStartShouldSetPanResponder: (evt, gestureState) => true,
+
+      onPanResponderMove: (evt, gestureState) => {
+        pan.setValue({x: gestureState.dx, y: gestureState.dy});
       },
-      onPanResponderMove: Animated.event([null, {dx: pan.x, dy: pan.y}]),
       onPanResponderRelease: (evt, gestureState) => {
         if (gestureState.dx > 120) {
           Animated.spring(pan, {
             useNativeDriver: false,
             toValue: {x: SCREEN_WIDTH + 150, y: gestureState.dy},
           }).start(() => {
-            addToFavoritesNews(reverseProducts[currentIndex.current]);
-            reverseProducts.shift();
+            addToFavoritesAction(reverseProducts[currentIndex.current]);
+            reverseProducts.pop();
             currentIndex.current += 1;
             console.log('currentIndex', reverseProducts.length);
             pan.setValue({x: 0, y: 0});
+            pan.flattenOffset();
           });
         } else if (gestureState.dx < -120) {
           Animated.spring(pan, {
             useNativeDriver: false,
             toValue: {x: -SCREEN_WIDTH - 150, y: gestureState.dy},
           }).start(() => {
-            reverseProducts.shift();
+            reverseProducts.pop();
             currentIndex.current += 1;
             console.log('currentIndex', reverseProducts.length);
             pan.setValue({x: 0, y: 0});
+            pan.flattenOffset();
           });
         } else {
           Animated.spring(pan, {
+            useNativeDriver: false,
             toValue: {x: 0, y: 0},
             friction: 4,
           }).start();
@@ -99,8 +98,8 @@ const Home = ({reverseProducts, getProducts, addToFavoritesNews}) => {
   const onClickItem = product => {
     navigation.navigate('ArticleDetails', {product});
   };
-  const addToFavorites = favorite => {
-    addToFavoritesNews(favorite);
+  const addToFavoritesAction = favorite => {
+    addToFavorites(favorite);
   };
   let currentIndex = useRef(0);
   const [likeOpacity, setLikeOpacity] = useState(

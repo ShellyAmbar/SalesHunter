@@ -14,17 +14,17 @@ import {
 } from './actions';
 
 function* handlerGetFavorites() {
-  yield takeEvery(GET_FAVORITE_REQUEST, getFavoritesNews);
+  yield takeEvery(GET_FAVORITE_REQUEST, getFavorites);
 }
 
 function* handlerAddToFavorites() {
-  yield takeEvery(ADD_TO_FAVORITE_REQUEST, addToFavoritesNews);
+  yield takeEvery(ADD_TO_FAVORITE_REQUEST, addToFavorites);
 }
 function* handlerRemoveFromFavorites() {
-  yield takeEvery(REMOVE_FROM_FAVORITE_REQUEST, removeFromFavoritesNews);
+  yield takeEvery(REMOVE_FROM_FAVORITE_REQUEST, removeFromFavorites);
 }
 
-function* getFavoritesNews() {
+function* getFavorites() {
   try {
     //TODO get favorites from firestore database
     const favorites = [];
@@ -34,7 +34,7 @@ function* getFavoritesNews() {
     yield put(getFavoritesActionError(error));
   }
 }
-function* addToFavoritesNews(favirte) {
+function* addToFavorites(favirte) {
   try {
     yield put(setToFavoritesActionSuccess(favirte));
   } catch (error) {
@@ -42,9 +42,9 @@ function* addToFavoritesNews(favirte) {
   }
 }
 
-function* removeFromFavoritesNews(favirte) {
+function* removeFromFavorites(favorite) {
   try {
-    yield put(removeFromFavoritesActionSuccess(favirte));
+    yield put(removeFromFavoritesActionSuccess(favorite));
   } catch (error) {
     yield put(removeFromFavoritesActionError(error));
   }

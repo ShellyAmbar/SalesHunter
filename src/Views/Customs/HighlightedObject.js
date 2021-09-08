@@ -36,7 +36,7 @@ const HighlightedObject = props => {
           textAlign: 'justify',
           fontWeight: '700',
         }}>
-        {obj.title}
+        {obj.name}
       </Text>
     </View>
   );

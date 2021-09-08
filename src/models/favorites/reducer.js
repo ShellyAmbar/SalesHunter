@@ -39,22 +39,30 @@ const reducer = (state = initialState, action) => {
 
     case REMOVE_FROM_FAVORITE_REQUEST_SUCCESS: {
       const favoritesItem = action.payload.payload;
-      const filteredList = state.favorites.filter(
-        item => item.title != favoritesItem.title,
-      );
-      state.favorites = filteredList;
-      return {
-        ...state,
-        favorites: [...state.favorites],
-      };
+      try {
+        console.log('state.favorites', state.favorites);
+        let filteredList = state.favorites.filter(item => {
+          console.log('item', item);
+          if (item) {
+            return favoritesItem.id !== item.id;
+          } else return false;
+        });
+
+        state.favorites = filteredList;
+      } catch (err) {
+        console.log('err', err);
+      }
+
+      return {...state, favorites: [...state.favorites]};
     }
 
     case REMOVE_FROM_FAVORITE_REQUEST_FAILURE: {
       const {err} = action.err;
-      return err;
+      return state;
     }
 
     default:
+      console.log('error');
       return state;
   }
 };

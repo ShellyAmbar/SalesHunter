@@ -49,7 +49,7 @@ const ListViewItem = props => {
           textAlign: 'justify',
           fontWeight: '700',
         }}>
-        {obj.title}
+        {obj && obj.name}
       </Text>
     </View>
   );

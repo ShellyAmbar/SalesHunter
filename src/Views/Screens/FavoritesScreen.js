@@ -17,13 +17,13 @@ const mapStateToProps = (state, props) => {
 };
 
 const mapDispatchToProps = (dispatch, props) => ({
-  getFavoritesNews: () => {
+  getFavorites: () => {
     dispatch({
       type: GET_FAVORITE_REQUEST,
       payload: {},
     });
   },
-  removeFromFavoritesNews: favorite => {
+  removeFromFavorites: favorite => {
     dispatch({
       type: REMOVE_FROM_FAVORITE_REQUEST,
       payload: favorite,
@@ -31,19 +31,19 @@ const mapDispatchToProps = (dispatch, props) => ({
   },
 });
 
-const Favorites = ({favorites, getFavoritesNews, removeFromFavoritesNews}) => {
+const Favorites = ({favorites, getFavorites, removeFromFavorites}) => {
   const navigation = useNavigation();
   //const [list, setList] = useState([]);
   const onClickItem = product => {
     navigation.navigate('ProductDetails', {product});
   };
-  const removeFromFavorites = favorite => {
-    removeFromFavoritesNews(favorite);
+  const removeFromFavoritesAction = favorite => {
+    removeFromFavorites(favorite);
   };
 
   useEffect(() => {
-    getFavoritesNews();
-  }, []);
+    getFavorites();
+  }, [getFavorites]);
 
   return (
     <View
@@ -62,7 +62,7 @@ const Favorites = ({favorites, getFavoritesNews, removeFromFavoritesNews}) => {
 
       {favorites && favorites.length > 0 && (
         <ListViewColumn
-          onClickStar={removeFromFavorites}
+          onClickStar={removeFromFavoritesAction}
           onClickItem={onClickItem}
           dataList={favorites}
         />

@@ -25,42 +25,51 @@ const ProductDetails = props => {
   //   }
   // }, [article.url]);
 
-  return (
-    <View
-      style={{
-        width: '100%',
-        height: '100%',
-        flex: 1,
-        alignItems: 'center',
-      }}>
-      <Text
+  const renderProduct = () => {
+    console.log('product', product);
+    return (
+      <View
         style={{
-          margin: 10,
+          width: '100%',
+          height: '100%',
+          flex: 1,
           padding: 10,
-          fontSize: 30,
-          width: '90%',
-          textAlign: 'justify',
-          fontWeight: '700',
+          alignItems: 'center',
         }}>
-        {product.name}
-      </Text>
-      <Text
-        style={{
-          margin: 10,
-          padding: 10,
-          fontSize: 25,
-          width: '90%',
-          textAlign: 'justify',
-          fontWeight: '700',
-        }}>
-        {`Brand: ${product.brand},Size: ${product.size}, Type: ${product.type}  `}
-      </Text>
-      <Image
-        source={{uri: `${product.image}`}}
-        style={{height: 200, width: '90%', borderRadius: 10}}
-      />
-    </View>
-  );
+        <Text
+          style={{
+            height: 100,
+            margin: 10,
+            padding: 10,
+            fontSize: 30,
+            width: '90%',
+            textAlign: 'justify',
+            fontWeight: '700',
+          }}>
+          {product.name}
+        </Text>
+
+        <Image
+          source={{uri: `${product.image}`}}
+          style={{height: 200, width: '90%', borderRadius: 10}}
+        />
+        <Text
+          style={{
+            margin: 10,
+            padding: 10,
+            fontSize: 25,
+            height: 200,
+            width: '90%',
+            textAlign: 'justify',
+            fontWeight: '700',
+          }}>
+          {`Brand: ${product.brand}\nSize: ${product.size}\nType:${product.type}  `}
+        </Text>
+      </View>
+    );
+  };
+
+  return <View>{product ? renderProduct() : null}</View>;
 };
 
 export default ProductDetails;

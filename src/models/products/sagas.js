@@ -12,7 +12,7 @@ function* getProducts() {
     let list = [];
     const response = yield call(getProductsCall);
     response.docs.map(product => list.push(product.data()));
-    console.log('list', list);
+    // console.log('list', list);
     yield put(productsActionSuccess(list));
   } catch (error) {
     yield put(productsActionError(error));
