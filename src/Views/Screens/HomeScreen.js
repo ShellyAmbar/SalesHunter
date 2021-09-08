@@ -60,25 +60,22 @@ const Home = ({reverseProducts, getProducts, addToFavorites}) => {
         if (gestureState.dx > 120) {
           Animated.spring(pan, {
             useNativeDriver: false,
-            toValue: {x: SCREEN_WIDTH + 150, y: gestureState.dy},
+            toValue: {x: SCREEN_WIDTH + 100, y: gestureState.dy},
           }).start(() => {
             addToFavoritesAction(reverseProducts[currentIndex.current]);
-            reverseProducts.pop();
+
             currentIndex.current += 1;
-            console.log('currentIndex', reverseProducts.length);
+            console.log('currentIndex', currentIndex.current);
             pan.setValue({x: 0, y: 0});
-            pan.flattenOffset();
           });
         } else if (gestureState.dx < -120) {
           Animated.spring(pan, {
             useNativeDriver: false,
-            toValue: {x: -SCREEN_WIDTH - 150, y: gestureState.dy},
+            toValue: {x: -SCREEN_WIDTH - 100, y: gestureState.dy},
           }).start(() => {
-            reverseProducts.pop();
             currentIndex.current += 1;
-            console.log('currentIndex', reverseProducts.length);
+            console.log('currentIndex', currentIndex.current);
             pan.setValue({x: 0, y: 0});
-            pan.flattenOffset();
           });
         } else {
           Animated.spring(pan, {

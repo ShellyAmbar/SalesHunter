@@ -10,8 +10,7 @@ const AuthProvider = ({children}) => {
   const [user, setUser] = useState(null);
   const trySignUp = () => {
     const db = firestore();
-
-    if (db.collection('users').doc(auth().currentUser.uid) == null) {
+    try {
       db.collection('users')
         .doc(auth().currentUser.uid)
         .set({
@@ -28,6 +27,8 @@ const AuthProvider = ({children}) => {
             error,
           );
         });
+    } catch {
+      console.log('Something went wrong with added user to firestore: ');
     }
   };
 
@@ -95,7 +96,7 @@ const AuthProvider = ({children}) => {
 
             // Once signed in, get the users AccesToken
           } catch (error) {
-            console.log({error});
+            console.log('error', error);
           }
         },
         register: async (email, password, callback) => {
