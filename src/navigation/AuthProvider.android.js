@@ -52,13 +52,14 @@ const AuthProvider = ({children}) => {
             const {idToken} = await GoogleSignin.signIn();
 
             // Create a Google credential with the token
-            const googleCredential =
-              auth.GoogleAuthProvider.credential(idToken);
+            const googleCredential = await auth.GoogleAuthProvider.credential(
+              idToken,
+            );
 
             // Sign-in the user with the credential
             auth()
               .signInWithCredential(googleCredential)
-              .then(trySignUp())
+              .then(() => trySignUp())
               .then(() => callback())
               .catch(error => {
                 console.log('Something went wrong with sign up: ', error);
@@ -89,7 +90,7 @@ const AuthProvider = ({children}) => {
                 console.log('facebookCredential');
                 auth()
                   .signInWithCredential(facebookCredential)
-                  .then(trySignUp())
+                  .then(() => trySignUp())
                   .then(() => callback());
               }
             }
