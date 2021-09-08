@@ -7,19 +7,29 @@ import auth from '@react-native-firebase/auth';
 import {AuthContext} from './AuthProvider.android';
 
 const RootNavigation = () => {
-  const {user, setUser} = useContext(AuthContext);
+  const [authenticate, setAuthenticate] = useState(false);
   const [initializing, setInitializing] = useState(true);
 
-  const onAuthStateChanged = user => {
-    setUser(user);
-    if (initializing) setInitializing(false);
-  };
+  const [user, setUser] = useState(null);
+
+  function onAuthStateChanged(user) {
+    if (user) {
+      setUser(user);
+      if (initializing) setInitializing(false);
+      setAuthenticate(true);
+    } else {
+      setInitializing(true);
+      setUser(null);
+      setAuthenticate(false);
+    }
+  }
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
+    return subscriber;
   }, []);
-  if (initializing) return null;
+  //if (initializing) return null;
+
   return (
     <NavigationContainer>
       {user ? <MainStack /> : <AuthStack />}

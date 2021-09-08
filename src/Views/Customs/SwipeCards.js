@@ -207,8 +207,8 @@ export default class SwipeCards extends Component {
 
   render() {
     return (
-      <View style={{flex: 1}}>
-        <View style={{height: 60}}></View>
+      <View style={{flex: 1, justifyContent: 'center', alignContent: 'center'}}>
+        <View style={{height: 40}}></View>
         <View style={{flex: 1}}>{this.renderProducts()}</View>
         <View style={{height: 60}}></View>
       </View>

@@ -46,29 +46,29 @@ const AuthProvider = ({children}) => {
             console.log(e);
           }
         },
-        googleLogin: async callback => {
+        googleLogin: async () => {
           try {
             // Get the users ID token
             const {idToken} = await GoogleSignin.signIn();
 
             // Create a Google credential with the token
-            const googleCredential = await auth.GoogleAuthProvider.credential(
-              idToken,
-            );
+            const googleCredential =
+              auth.GoogleAuthProvider.credential(idToken);
 
             // Sign-in the user with the credential
-            auth()
-              .signInWithCredential(googleCredential)
-              .then(() => trySignUp())
-              .then(() => callback())
-              .catch(error => {
-                console.log('Something went wrong with sign up: ', error);
-              });
+            return (
+              auth()
+                .signInWithCredential(googleCredential)
+                //.then(() => trySignUp())
+                .catch(error => {
+                  console.log('Something went wrong with sign up: ', error);
+                })
+            );
           } catch (error) {
             console.log({error});
           }
         },
-        fbLogin: async callback => {
+        fbLogin: async () => {
           try {
             // Attempt login with permissions
             const result = await LoginManager.logInWithPermissions([
@@ -88,10 +88,8 @@ const AuthProvider = ({children}) => {
                 await auth.FacebookAuthProvider.credential(res.accessToken);
               if (facebookCredential) {
                 console.log('facebookCredential');
-                auth()
-                  .signInWithCredential(facebookCredential)
-                  .then(() => trySignUp())
-                  .then(() => callback());
+                return auth().signInWithCredential(facebookCredential);
+                //.then(() => trySignUp());
               }
             }
 
