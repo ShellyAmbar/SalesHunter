@@ -11,6 +11,9 @@ const AuthProvider = ({children}) => {
   const trySignUp = () => {
     const db = firestore();
     try {
+      if (!db.collection('users').doc(auth().currentUser.uid)) {
+        throw 'alredy exist';
+      }
       db.collection('users')
         .doc(auth().currentUser.uid)
         .set({
@@ -27,8 +30,8 @@ const AuthProvider = ({children}) => {
             error,
           );
         });
-    } catch {
-      console.log('Something went wrong with added user to firestore: ');
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -46,12 +49,11 @@ const AuthProvider = ({children}) => {
               .signInWithEmailAndPassword(email, password)
               .then(() => callback())
               .catch(err => console.log(err));
-            // .then(trySignUp());
           } catch (e) {
             console.log(e);
           }
         },
-        googleLogin: async () => {
+        googleLogin: async callback => {
           try {
             // Get the users ID token
             const {idToken} = await GoogleSignin.signIn();
@@ -61,19 +63,18 @@ const AuthProvider = ({children}) => {
               auth.GoogleAuthProvider.credential(idToken);
 
             // Sign-in the user with the credential
-            return (
-              auth()
-                .signInWithCredential(googleCredential)
-                //.then(() => trySignUp())
-                .catch(error => {
-                  console.log('Something went wrong with sign up: ', error);
-                })
-            );
+            await auth()
+              .signInWithCredential(googleCredential)
+              .then(() => trySignUp())
+              .then(() => callback())
+              .catch(error => {
+                console.log('Something went wrong with sign in: ', error);
+              });
           } catch (error) {
             console.log({error});
           }
         },
-        fbLogin: async () => {
+        fbLogin: async callback => {
           try {
             // Attempt login with permissions
             const result = await LoginManager.logInWithPermissions([
@@ -92,7 +93,13 @@ const AuthProvider = ({children}) => {
               const facebookCredential = auth.FacebookAuthProvider.credential(
                 res.accessToken,
               );
-              return auth().signInWithCredential(facebookCredential);
+              await auth()
+                .signInWithCredential(facebookCredential)
+                .then(() => trySignUp())
+                .then(() => callback())
+                .catch(error => {
+                  console.log('Something went wrong with sign in: ', error);
+                });
             }
 
             // Once signed in, get the users AccesToken
