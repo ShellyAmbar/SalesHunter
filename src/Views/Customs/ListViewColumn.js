@@ -16,7 +16,7 @@ const ListViewColumn = props => {
   const ListView = () => {
     return (
       <ScrollView
-        style={{padding: 10, marginBottom: 20, width: '100%'}}
+        style={{padding: 10, marginBottom: 20, width: SCREEN_WIDTH}}
         horizontal="false">
         {dataList &&
           dataList.map((data, index) => {
