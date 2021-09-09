@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useRef} from 'react';
 import {
   Text,
   StyleSheet,
@@ -8,6 +8,8 @@ import {
   Dimensions,
   Image,
 } from 'react-native';
+import {CountdownCircleTimer} from 'react-native-countdown-circle-timer';
+import CountDownTimer from './CountDownTimer';
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -16,7 +18,6 @@ export default class SwipeCards extends Component {
     super(props);
     this.products = props.products;
     this.addToFavorites = props.addToFavorites;
-
     this.position = new Animated.ValueXY();
     this.panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (evt, gestureState) => true,
@@ -31,29 +32,13 @@ export default class SwipeCards extends Component {
             toValue: {x: SCREEN_WIDTH + 100, y: gestureState.dy},
           }).start(() => {
             this.addToFavorites(this.products[this.state.currentIndex]);
-            this.setState(
-              {
-                currentIndex: this.state.currentIndex + 1,
-              },
-              () => {
-                this.position.setValue({x: 0, y: 0});
-              },
-            );
+            this.updateCurrentIndex();
           });
         } else if (gestureState.dx < -120) {
           Animated.spring(this.position, {
             useNativeDriver: false,
             toValue: {x: -SCREEN_WIDTH - 100, y: gestureState.dy},
-          }).start(() => {
-            this.setState(
-              {
-                currentIndex: this.state.currentIndex + 1,
-              },
-              () => {
-                this.position.setValue({x: 0, y: 0});
-              },
-            );
-          });
+          }).start(() => this.updateCurrentIndex());
         } else {
           Animated.spring(this.position, {
             useNativeDriver: false,
@@ -102,6 +87,32 @@ export default class SwipeCards extends Component {
       currentIndex: 0,
     };
   }
+
+  updateCurrentIndex = () => {
+    return this.setState(
+      {
+        currentIndex: this.state.currentIndex + 1,
+      },
+      () => {
+        this.position.setValue({x: 0, y: 0});
+      },
+    );
+  };
+
+  onTimerCompleted = () => {
+    console.log('finished');
+    const interval = setInterval(() => {
+      this.updateCurrentIndex();
+      clearInterval(interval);
+    }, 1000);
+
+    Animated.timing(this.position, {
+      useNativeDriver: false,
+      duration: 1000,
+      toValue: {x: -SCREEN_WIDTH - 100, y: this.position.y},
+    }).start();
+  };
+
   renderProducts() {
     return this.products
       .map((item, i) => {
@@ -162,6 +173,18 @@ export default class SwipeCards extends Component {
                   }}>
                   Nope
                 </Text>
+              </Animated.View>
+              <Animated.View
+                style={{
+                  width: SCREEN_WIDTH,
+                  flex: 1,
+                  alignItems: 'center',
+                  position: 'absolute',
+                  bottom: 50,
+
+                  zIndex: 100,
+                }}>
+                <CountDownTimer onAnimationFinished={this.onTimerCompleted} />
               </Animated.View>
 
               <Image
