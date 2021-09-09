@@ -11,7 +11,7 @@ export default function CountDownTimer({
   strokeWidth = 10,
   radius = 40,
   max = 100,
-  maxVal = 10,
+  maxVal = 20,
   onAnimationFinished,
 }) {
   const halfCircle = radius + strokeWidth;
